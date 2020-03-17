@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Add Event</router-link> |
-      <router-link to="/search-event">Search Event</router-link>
+      <router-link to="/">Добавить событие</router-link> |
+      <router-link to="/search-event">Найти событие</router-link>
     </div>
     <router-view/>
   </div>
@@ -19,6 +19,9 @@
 
 #nav {
   padding: 30px;
+  left: 0;
+  right: 0;
+  margin: auto;
 
   a {
     font-weight: bold;

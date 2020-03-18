@@ -92,6 +92,10 @@
                                                 <div class="error" v-if="!$v.formModel.theme.required">
                                                     {{formModel.errorMessages.required}}
                                                 </div>
+                                                <div class="error" v-if="!$v.formModel.theme.minLength">
+                                                    {{formModel.errorMessages.min}} {{
+                                                    $v.formModel.name.$params.minLength.min }} знака.
+                                                </div>
                                             </div>
                                             <!--                    //Content-->
                                             <v-textarea
@@ -107,10 +111,14 @@
                                                 <div class="error" v-if="!$v.formModel.content.required">
                                                     {{formModel.errorMessages.required}}
                                                 </div>
+                                                <div class="error" v-if="!$v.formModel.content.minLength">
+                                                    {{formModel.errorMessages.min}} {{
+                                                    $v.formModel.name.$params.minLength.min }} знака.
+                                                </div>
                                             </div>
                                             <!--                    // Date picker-->
                                             <v-menu
-                                                    v-model="fromDateMenu"
+                                                    v-model="formModel.fromDateMenu"
                                                     :close-on-content-click="false"
                                                     :nudge-right="40"
                                                     transition="scale-transition"
@@ -131,13 +139,13 @@
                                                         locale="ru"
                                                         v-model="fromDateVal"
                                                         no-title
-                                                        @input="fromDateMenu = false"
+                                                        @input="formModel.fromDateMenu = false"
                                                         :min="minDate"
                                                 ></v-date-picker>
                                             </v-menu>
                                             <!--                    // Time picker-->
                                             <v-menu
-                                                    v-model="fromTimeMenu"
+                                                    v-model="formModel.fromTimeMenu"
                                                     :close-on-content-click="false"
                                                     :nudge-right="40"
                                                     transition="scale-transition"
@@ -158,7 +166,7 @@
                                                         :format="format"
                                                         v-model="fromTimeVal"
                                                         no-title
-                                                        @input="fromTimeMenu = false"
+                                                        @input="formModel.fromTimeMenu = false"
                                                 ></v-time-picker>
                                             </v-menu>
                                         </v-form>
@@ -200,6 +208,8 @@
                 eventList: '',
                 theme: '',
                 content: '',
+                fromDateMenu: false,
+                fromTimeMenu: false,
                 errors: null,
                 formTouched: null,
                 errorMessages: {
@@ -209,12 +219,9 @@
             },
             submitStatus: null,
             eventsList: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-            fromDateMenu: false,
-            fromTimeMenu: false,
             fromDateVal: new Date().toISOString().substr(0, 10),
             fromTimeVal: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
             minDate: "2020-01-05",
-            maxDate: "2019-08-30",
             format: '24hr',
         }),
         methods: {
@@ -239,6 +246,7 @@
                 this.formModel.content = '';
                 this.formModel.errors = null;
                 this.formModel.formTouched = null;
+                this.submitStatus = null;
                 this.$v.$reset();
             }
         },
@@ -269,9 +277,11 @@
                 },
                 theme: {
                     required,
+                    minLength: minLength(2),
                 },
                 content: {
                     required,
+                    minLength: minLength(2),
                 }
             }
         }

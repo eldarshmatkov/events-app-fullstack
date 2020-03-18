@@ -102,6 +102,7 @@
                 this.formModel.search = '';
                 this.formModel.errors = null;
                 this.formModel.formTouched = null;
+                this.submitStatus = null;
                 this.$v.$reset();
             }
         },

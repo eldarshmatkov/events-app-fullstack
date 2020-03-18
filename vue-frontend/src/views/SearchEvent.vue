@@ -21,7 +21,7 @@
                         dark
                         flat
                 >
-                  <v-toolbar-title>Форма Поиска</v-toolbar-title>
+                  <v-toolbar-title>Форма поиска событий</v-toolbar-title>
                   <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-text>

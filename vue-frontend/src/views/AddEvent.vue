@@ -199,6 +199,8 @@
 <script>
     // @ is an alias to /src
     import {required, minLength} from 'vuelidate/lib/validators'
+    import axios from 'axios';
+    import qs from 'querystring';
 
     export default {
         data: () => ({
@@ -217,10 +219,11 @@
                     min: ' * Поле должно содержать минимум'
                 }
             },
+            networkErrors: [],
             submitStatus: null,
             eventsList: ['Foo', 'Bar', 'Fizz', 'Buzz'],
             fromDateVal: new Date().toISOString().substr(0, 10),
-            fromTimeVal: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            fromTimeVal: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}),
             minDate: "2020-01-05",
             format: '24hr',
         }),
@@ -233,12 +236,27 @@
                 } else {
                     // do your submit logic here
                     this.submitStatus = 'PENDING';
-                    setTimeout(() => {
-                        this.submitStatus = 'OK';
-                    }, 500)
+                    let preparedObject = qs.stringify({...this.formModel, ...{fromDateMenu: this.fromDateVal}, ...{fromTimeMenu: this.fromTimeVal}});
+                    axios.post('http://localhost:3000/send',
+                        preparedObject, {
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        })
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            this.networkErrors.push(err);
+                        })
+                        .finally(() => {
+                            this.resetForm(true);
+                            this.submitStatus = 'OK'
+                        })
                 }
             },
-            resetForm() {
+            resetForm(partially) {
                 this.formModel.name = '';
                 this.formModel.unit = '';
                 this.formModel.eventList = '';
@@ -246,8 +264,9 @@
                 this.formModel.content = '';
                 this.formModel.errors = null;
                 this.formModel.formTouched = null;
-                this.submitStatus = null;
                 this.$v.$reset();
+                if (partially) return;
+                this.submitStatus = null;
             }
         },
         computed: {
@@ -259,8 +278,6 @@
                 return this.fromTimeVal;
                 // format/do something with date
             },
-        },
-        mounted() {
         },
         validations: {
             formModel: {

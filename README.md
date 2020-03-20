@@ -16,7 +16,10 @@ npm i
 
 npm run serve
 ___
-##Описание задания
+#### Time spent on a project 
+[Check here] (https://wakatime.com/@el_dharma/projects/iccpxmrzwh?start=2020-03-14&end=2020-03-20)
+___
+## Task description
 Создать сервис поиска и регистрации события.
 
 Сервис состоит из формы о событии, rest сервиса отправки события и сервера приложения(rest сервер и запись в бд).

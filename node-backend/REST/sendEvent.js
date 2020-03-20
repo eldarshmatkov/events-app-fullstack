@@ -4,7 +4,6 @@ var db = require('../database/database');
 
 /* GET events listing. */
 app.post('/send', function (req, res, next) {
-    console.log(req.body,'<---REQUEST BODY');
     var errors=[];
     if (!req.body.name){
         errors.push("No name specified");
@@ -48,7 +47,6 @@ app.post('/send', function (req, res, next) {
             "id" : this.lastID
         })
     });
-    console.log(req.body, 'send!!');
 });
 
 module.exports = app;

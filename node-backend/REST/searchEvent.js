@@ -4,9 +4,9 @@ var db = require('../database/database');
 
 /* GET events listing. */
 app.get('/search', function (req, res, next) {
-    // res.send('respond with a resource');
-    var sql = "select * from event";
-    var params = [];
+    var sql = "SELECT * FROM event WHERE theme LIKE ?";
+    var formattedParam = '%' + req.query.search + '%';
+    var params = [formattedParam];
     db.all(sql, params, (err, rows) => {
         if (err) {
             res.status(400).json({"error": err.message});
@@ -17,7 +17,6 @@ app.get('/search', function (req, res, next) {
             "data": rows
         })
     });
-    console.log('search!!');
 });
 
 module.exports = app;

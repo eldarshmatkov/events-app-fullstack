@@ -234,27 +234,29 @@
                 if (this.$v.$invalid) {
                     this.submitStatus = 'ERROR';
                 } else {
-                    // do your submit logic here
                     this.submitStatus = 'PENDING';
-                    let preparedObject = qs.stringify({...this.formModel, ...{fromDateMenu: this.fromDateVal}, ...{fromTimeMenu: this.fromTimeVal}});
-                    axios.post('http://localhost:3000/send',
-                        preparedObject, {
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        })
-                        .then(response => {
-                            console.log(response);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            this.networkErrors.push(err);
-                        })
-                        .finally(() => {
-                            this.resetForm(true);
-                            this.submitStatus = 'OK'
-                        })
+                    this.axiosCall();
                 }
+            },
+            axiosCall() {
+                let preparedObject = qs.stringify({...this.formModel, ...{fromDateMenu: this.fromDateVal}, ...{fromTimeMenu: this.fromTimeVal}});
+                axios.post('http://localhost:3000/send',
+                    preparedObject, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        this.networkErrors.push(err);
+                    })
+                    .finally(() => {
+                        this.resetForm(true);
+                        this.submitStatus = 'OK'
+                    })
             },
             resetForm(partially) {
                 this.formModel.name = '';

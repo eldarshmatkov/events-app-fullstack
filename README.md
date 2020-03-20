@@ -1,6 +1,22 @@
 # events-app-fullstack
 ### vue + node = fullstack app
 
+___
+#### Installation guide backend:
+cd node-backend 
+
+npm i
+
+npm start
+___
+#### Installation guide frontend:
+cd vue-frontend 
+
+npm i
+
+npm run serve
+___
+##Описание задания
 Создать сервис поиска и регистрации события.
 
 Сервис состоит из формы о событии, rest сервиса отправки события и сервера приложения(rest сервер и запись в бд).

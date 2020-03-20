@@ -295,7 +295,7 @@
                 },
                 theme: {
                     required,
-                    minLength: minLength(2),
+                    minLength: minLength(3),
                 },
                 content: {
                     required,

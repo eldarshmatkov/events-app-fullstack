@@ -62,6 +62,7 @@
                                         <p class="typo__p" v-if="submitStatus === 'PENDING'">Отправляю...</p>
                                         <p class="typo__p" v-if="submitStatus === 'NORESULT'">По запросу не найдено ни
                                             одного события</p>
+                                        <p class="typo__p" v-if="submitStatus === 'NETWORKERROR'">Ошибка запроса. Пожалуйста повторите попытку позже.</p>
                                         <p class="typo__p" v-if="formModel.formTouched">Поле поиска пусто</p>
                                     </v-card-text>
                                 </v-card>
@@ -164,7 +165,6 @@
             submit() {
                 if (this.debounceTimer) clearTimeout(this.debounceTimer);
                 this.debounceTimer = setTimeout(() => {
-                    console.log('click!!');
                     this.formModel.formTouched = !this.$v.formModel.$anyDirty;
                     this.formModel.errors = this.$v.formModel.$anyError;
                     if (this.$v.$invalid) {
@@ -193,6 +193,7 @@
                     .catch(err => {
                         console.log(err);
                         this.networkErrors.push(err);
+                        this.submitStatus = 'NETWORKERROR';
                     })
             },
             resetForm() {

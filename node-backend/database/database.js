@@ -42,7 +42,6 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
         console.error(err.message);
         throw err;
     } else {
-        console.log('Connected to the SQLite database.');
         db.run(`CREATE TABLE event (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name text, 

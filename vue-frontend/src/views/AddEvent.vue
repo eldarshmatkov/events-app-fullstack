@@ -184,6 +184,7 @@
                                         <p class="typo__p" v-if="submitStatus === 'ERROR'">Пожалуйста, заполните форму
                                             корректно.</p>
                                         <p class="typo__p" v-if="submitStatus === 'PENDING'">Отправляю...</p>
+                                        <p class="typo__p" v-if="submitStatus === 'NETWORKERROR'">Ошибка запроса. Пожалуйста повторите попытку позже.</p>
                                         <p class="typo__p" v-if="formModel.formTouched">Все требуемые поля пустые</p>
                                     </v-card-text>
                                 </v-card>
@@ -246,16 +247,14 @@
                             'Content-Type': 'application/x-www-form-urlencoded'
                         }
                     })
-                    .then(response => {
-                        console.log(response);
+                    .then(() => {
+                        this.submitStatus = 'OK';
+                        this.resetForm(true);
                     })
                     .catch(err => {
                         console.log(err);
                         this.networkErrors.push(err);
-                    })
-                    .finally(() => {
-                        this.resetForm(true);
-                        this.submitStatus = 'OK'
+                        this.submitStatus = 'NETWORKERROR';
                     })
             },
             resetForm(partially) {
